@@ -1,28 +1,84 @@
-# Separatum
+# (WIP) Separatum
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/separatum`. To experiment with that code, run `bin/console` for an interactive prompt.
+Extract and transfer linked objects from one database into another. 
 
-TODO: Delete this and the text above, and describe your gem
+## UUID
 
-## Installation
+It is better if you are using UUID primary key in every table you want to extract.
+This will allow you to avoid problems (with primary keys and sequences) during importing objects into a new database.
+Also `UuidChanger` can help you avoid collisions in case of importing same objects more than one time in the same database.
 
-Add this line to your application's Gemfile:
+## Examples
 
-```ruby
-gem 'separatum'
+```bash
+gem install separatum
 ```
 
-And then execute:
+```ruby
+require 'separatum'
+```
 
-    $ bundle
+### Extract and export
 
-Or install it yourself as:
+Build new exporter
 
-    $ gem install separatum
+```ruby
+exporter = Separatum.build do
+  use Separatum::Importers::ActiveRecord  # We are going to crawl ActiveRecord objects
+  use Separatum::Converters::Object2Hash  # Most of the modules in Separatum is working with Hash-form of objects
+  use Separatum::Processors::UuidChanger  # Hide production's UUIDs with no broken links 
+  use Separatum::Exporters::JsonFile, file_name: 'separate.json' # Export object to json file                                      
+end
+```
 
-## Usage
+Define start object and extract all linked records into `separate.json` file
 
-TODO: Write usage instructions here
+```ruby
+start_object = User.find('any_uuid_from_your_table')
+exporter.(start_object)
+```
+
+### Import into new database
+
+Build new importer
+
+```ruby
+importer = Separatum.build do
+  use Separatum::Importers::JsonFile, file_name: 'separate.json' # We are going to import hashed objects from separate.json
+  use Separatum::Converters::Hash2Object # Convert back to real objects (not persisted)
+  use Separatum::Exporters::ActiveRecord # Save them (in one transaction for all objects in set)
+end
+```
+
+Import records to a database from `separate.json` file
+
+```ruby
+importer.() # It returns set of persisted objects
+```
+
+### Extract and generate ruby code
+
+```ruby
+seeds_generator = Separatum.build do
+  use Separatum::Importers::ActiveRecord
+  use Separatum::Converters::Object2Hash
+  use Separatum::Processors::UuidChanger
+  use Separatum::Converters::Hash2Object
+  use Separatum::Exporters::ActiveRecordCode
+end
+
+```
+
+Return generated ruby code for creating objects in a database
+
+```ruby
+start_object = User.find('any_uuid_you_want_to_start_from')
+puts seeds_generator.(start_object)
+```
+
+## TODO
+
+- Data obfuscation (respecting to private data)
 
 ## Development
 

@@ -1,0 +1,3 @@
+<%= object.class %>.connection.execute("ALTER TABLE <%= object.class.table_name %> DISABLE TRIGGER ALL;")
+<%= object.class %>.new(<%= attributes_str.join(', ') %>).save!(validate: false)
+<%= object.class %>.connection.execute("ALTER TABLE <%= object.class.table_name %> ENABLE TRIGGER ALL;")
