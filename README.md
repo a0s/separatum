@@ -1,6 +1,12 @@
 # (WIP) Separatum
 
-Extract and transfer linked objects from one database into another. 
+Extract and transfer linked objects from one database into another.
+
+## How you can use it
+
+- Making seeds.rb as copy of production data for testing purposes.
+- Making separate database for AB-testing (performance or marketing purposes)
+- Checking your data logical structure (it will raise on broken or unexisting links)
 
 ## UUID
 
@@ -88,7 +94,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/separatum.
+Bug reports and pull requests are welcome on GitHub at https://github.com/a0s/separatum.
 
 ## License
 
