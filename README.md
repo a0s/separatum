@@ -4,7 +4,7 @@ Extract and transfer linked objects from one database into another.
 
 ## How you can use it
 
-- Making seeds.rb as copy of production data for testing purposes.
+- Making seeds.rb as copy of production data for testing purposes
 - Making separate database for AB-testing (performance or marketing purposes)
 - Checking your data logical structure (it will raise on broken or unexisting links)
 
@@ -85,7 +85,7 @@ puts seeds_generator.(start_object)
 ## TODO
 
 - Data obfuscation (respecting to private data)
-- Edge class es which limit fetching graph
+- Edge classes which limit fetching graph
 
 ## Development
 
