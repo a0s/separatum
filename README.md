@@ -85,6 +85,7 @@ puts seeds_generator.(start_object)
 ## TODO
 
 - Data obfuscation (respecting to private data)
+- Edge class es which limit fetching graph
 
 ## Development
 
