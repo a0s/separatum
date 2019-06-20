@@ -86,6 +86,7 @@ puts seeds_generator.(start_object)
 
 - Data obfuscation (respecting to private data)
 - Edge classes which limit fetching graph
+- Timemachine for DateTime fields
 
 ## Development
 
