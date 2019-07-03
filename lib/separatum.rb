@@ -1,5 +1,3 @@
-require "separatum/version"
-
 Dir[File.expand_path(File.join(__FILE__, %w(.. ** *.rb)))].each(&method(:require))
 
 module Separatum
@@ -22,12 +20,11 @@ module Separatum
     end
 
     def call(*options)
-      current_options = options
       current_result = nil
       @stack.each do |el|
         klass, *params = el
         instance = klass.new(*params)
-        current_result = instance.(*(current_result || current_options))
+        current_result = instance.(current_result || options)
       end
       current_result
     end

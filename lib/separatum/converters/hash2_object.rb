@@ -2,14 +2,15 @@ module Separatum
   module Converters
     class Hash2Object
       def call(*hashes)
-        hashes.map do |hash|
+        hashes.flatten.map do |hash|
           hash_copy = hash.symbolize_keys
-          _klass = hash_copy.delete(:_klass).constantize
-          instance = _klass.new
-          hash_copy.symbolize_keys.each do |k, v|
-            instance.send("#{k}=", v)
+          klass = Object.const_get(hash_copy.delete(:_klass))
+          hash_copy.keys.map(&:to_s).select { |k| '_' == k[0] }.each { |k| hash_copy.delete(k.to_sym) }
+          object = klass.new
+          hash_copy.each do |k, v|
+            object.send("#{k}=", v)
           end
-          instance
+          object
         end
       end
     end

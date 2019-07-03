@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require File.expand_path('../config/environment', __FILE__)
+
+def without_triggers(table_name, &block)
+  Transactions::CardPayTransaction.connection.execute("ALTER TABLE #{table_name} DISABLE TRIGGER ALL;")
+  yield
+  Transactions::CardPayTransaction.connection.execute("ALTER TABLE #{table_name} ENABLE TRIGGER ALL;")
+end
+
+def ignore_record_not_unique(&block)
+  begin
+    yield
+  rescue ActiveRecord::RecordNotUnique
+    nil
+  end
+end
+
+<%= transactions_str.join("\n") %>

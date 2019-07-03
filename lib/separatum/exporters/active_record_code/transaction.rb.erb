@@ -1,3 +1,3 @@
-::ActiveRecord::Base.transaction do
+::ActiveRecord::Base.transaction(joinable: false, requires_new: true) do
 <%= objects_str.join("\n") %>
 end

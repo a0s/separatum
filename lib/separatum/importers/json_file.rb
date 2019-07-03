@@ -5,9 +5,10 @@ module Separatum
         @file_name = file_name
       end
 
-      def call(*_)
+      def call(*)
         str = File.read(@file_name)
-        JSON.parse(str)
+        hash = JSON.parse(str)
+        hash.symbolize_keys
       end
     end
   end

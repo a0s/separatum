@@ -1,3 +1,5 @@
-<%= object.class %>.connection.execute("ALTER TABLE <%= object.class.table_name %> DISABLE TRIGGER ALL;")
-<%= object.class %>.new(<%= attributes_str.join(', ') %>).save!(validate: false)
-<%= object.class %>.connection.execute("ALTER TABLE <%= object.class.table_name %> ENABLE TRIGGER ALL;")
+<% if ignore_not_unique_classes.include?(object.class) %>
+without_triggers(:<%= object.class.table_name %>) { ignore_record_not_unique { <%= object.class %>.new(<%= attributes_str.join(', ') %>).save!(validate: false) } }
+<% else %>
+without_triggers(:<%= object.class.table_name %>) { <%= object.class %>.new(<%= attributes_str.join(', ') %>).save!(validate: false) }
+<% end %>

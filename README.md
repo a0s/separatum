@@ -30,8 +30,7 @@ Build new exporter
 
 ```ruby
 exporter = Separatum.build do
-  use Separatum::Importers::ActiveRecord  # We are going to crawl ActiveRecord objects
-  use Separatum::Converters::Object2Hash  # Most of the modules in Separatum is working with Hash-form of objects
+  use Separatum::Importers::ActiveRecord  # We are going to crawl ActiveRecord objects  
   use Separatum::Processors::UuidChanger  # Hide production's UUIDs with no broken links 
   use Separatum::Exporters::JsonFile, file_name: 'separate.json' # Export object to json file                                      
 end
@@ -50,8 +49,7 @@ Build new importer
 
 ```ruby
 importer = Separatum.build do
-  use Separatum::Importers::JsonFile, file_name: 'separate.json' # We are going to import hashed objects from separate.json
-  use Separatum::Converters::Hash2Object # Convert back to real objects (not persisted)
+  use Separatum::Importers::JsonFile, file_name: 'separate.json' # We are going to import hashed objects from separate.json  
   use Separatum::Exporters::ActiveRecord # Save them (in one transaction for all objects in set)
 end
 ```
@@ -67,9 +65,7 @@ importer.() # It returns set of persisted objects
 ```ruby
 seeds_generator = Separatum.build do
   use Separatum::Importers::ActiveRecord
-  use Separatum::Converters::Object2Hash
-  use Separatum::Processors::UuidChanger
-  use Separatum::Converters::Hash2Object
+  use Separatum::Processors::UuidChanger  
   use Separatum::Exporters::ActiveRecordCode
 end
 
@@ -82,10 +78,52 @@ start_object = User.find('any_uuid_you_want_to_start_from')
 puts seeds_generator.(start_object)
 ```
 
+## Building parts
+
+### Separatum::Importers::ActiveRecord
+
+Parameters:
+
+  - max_depth (default: 3)
+  - edge_classes
+  - denied_classes 
+  - denied_class_transitions
+  - svg_file_name
+  - dot_file_name
+
+### Separatum::Importers::JsonFile
+
+Parameters:
+
+  - file_name
+  
+### Separatum::Processors::FieldChanger
+
+Parameters:
+
+  - 1st/2nd - class and field to change
+  - 3rd/4th - class and method that will make transformation 
+  - 3rd  - Proc or Block 
+  
+### Separatum::Exporters::ActiveRecord
+
+### Separatum::Exporters::ActiveRecordCode
+
+Parameters:
+
+  - file_name
+  - ignore_not_unique_classes
+  
+  
+### Separatum::Exporters::JsonFile
+
+Parameters:
+  
+  - file_name
+  - pretty_print
+
 ## TODO
 
-- Data obfuscation (respecting to private data)
-- Edge classes which limit fetching graph
 - Timemachine for DateTime fields
 
 ## Development

@@ -6,10 +6,11 @@ module Separatum
         @pretty_print = pretty_print
       end
 
-      def call(*array)
-        str = @pretty_print ? JSON.pretty_generate(array) : JSON.dump(array)
+      def call(*hashes)
+        hashes.flatten!
+        str = @pretty_print ? JSON.pretty_generate(hashes) : JSON.dump(hashes)
         File.write(@file_name, str)
-        array
+        hashes
       end
     end
   end
