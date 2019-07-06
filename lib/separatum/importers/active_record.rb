@@ -17,6 +17,7 @@ module Separatum
         @klass_transitions = Set[]
         @object_transitions = Set[]
         @objects = Set[]
+        @time_machine = Time.now
       end
 
       def call(*objects)
@@ -35,7 +36,7 @@ module Separatum
           end
         end
 
-        ::Separatum::Converters::Object2Hash.new.(result.flatten.uniq)
+        ::Separatum::Converters::Object2Hash.new(common_fields: { _time_machine: @time_machine }).(result.flatten.uniq)
       end
 
       def act(object, depth = 1)

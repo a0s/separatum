@@ -5,7 +5,7 @@ module Separatum
         @common_fields = params[:common_fields] || {}
       end
 
-      def call(*objects)
+      def call(*objects, **params)
         objects.flatten.map do |object|
           hash =
             if object.respond_to?(:as_json)

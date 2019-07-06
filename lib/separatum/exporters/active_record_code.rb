@@ -11,6 +11,7 @@ module Separatum
       def initialize(**params)
         @file_name = params[:file_name]
         @ignore_not_unique_classes = params[:ignore_not_unique_classes] || []
+        @time_machine = params[:time_machine]
       end
 
       def call(*hashes)
