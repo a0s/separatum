@@ -7,6 +7,7 @@ Extract and transfer linked objects from one database into another.
 - Making seeds.rb as copy of production data for testing purposes
 - Making separate database for AB-testing (performance or marketing purposes)
 - Checking your data logical structure (it will raise on broken or unexisting links)
+- Freeze state of a set of objects in time and export them as `Object.create` ruby-code
 
 ## UUID
 
